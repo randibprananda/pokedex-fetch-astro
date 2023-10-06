@@ -1,7 +1,43 @@
 ---
 import MainLayout from '@layouts/MainLayout.astro';
+import { Image } from 'astro:assets';
+
+const res = await fetch(import.meta.env.PUBLIC_API_BASE_URL + '?limit=10');
+const { results } = await res.json();
+
+interface PokemonDto {
+  name: string;
+  url: string;
+}
 ---
 
 <MainLayout title='Home - Pokedex'>
-  <h1>Astro</h1>
+  <section class='grid grid-cols-5 gap-3'>
+    {
+      results.map((pokemon: PokemonDto) => (
+        <a href={`/pokedex/${pokemon.name}`}>
+          <div class='bg-white rounded-md transition-transform duration-200 ease-in-out hover:-translate-y-2'>
+            <figure class='block w-full'>
+              <Image
+                src={import.meta.env.PUBLIC_IMG_URL + pokemon.url.slice(34).replace('/', '') + '.png'}
+                alt='Pokemon'
+                width={300}
+                height={200}
+              />
+            </figure>
+            <div class='py-4'>
+              <p class='text-slate-800 text-center text-lg'>{pokemon.name}</p>
+            </div>
+          </div>
+        </a>
+      ))
+    }
+  </section>
+  <div class='text-center mt-8'>
+    <a
+      href='/pokedex'
+      class='inline-block bg-orange-600 font-bold text-slate-100 px-4 py-2 rounded-lg hover:bg-orange-700 hover:text-slate-200'
+      >Load More Pokemon...</a
+    >
+  </div>
 </MainLayout>
