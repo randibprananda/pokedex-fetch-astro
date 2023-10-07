@@ -11,7 +11,7 @@ const res = await fetch(`${import.meta.env.PUBLIC_API_BASE_URL}/${slug}`);
 const pokemon = await res.json();
 ---
 
-<MainLayout title={pokemon.name}>
+<MainLayout title={pokemon.name + ' - Pokedex'}>
   <h3 class='text-center text-3xl font-semibold uppercase'>{pokemon.name}</h3>
   <section class='flex mt-4'>
     <figure class='bg-gray-300'>
